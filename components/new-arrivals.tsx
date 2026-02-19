@@ -80,12 +80,14 @@ export function NewArrivals({ products: qdProducts = [] }: Props) {
           {products.map((product) => (
             <Link key={product.id} href={`/products/${product.slug}`} className="group cursor-pointer flex-none w-52 no-underline">
               <div className="relative aspect-[3/4] overflow-hidden rounded-lg mb-3 bg-stone-900">
-                <Image
-                  src={product.image}
-                  alt={language === "es" ? product.nameEs : product.nameEn}
-                  fill
-                  className="object-cover transition-transform duration-500 group-hover:scale-105"
-                />
+                {product.image && (
+                  <Image
+                    src={product.image}
+                    alt={language === "es" ? product.nameEs : product.nameEn}
+                    fill
+                    className="object-cover transition-transform duration-500 group-hover:scale-105"
+                  />
+                )}
                 <span className="absolute top-2 left-2 text-[10px] uppercase tracking-widest bg-white text-stone-900 px-2 py-0.5 font-medium rounded-full">
                   {language === "es" ? "Nuevo" : "New"}
                 </span>

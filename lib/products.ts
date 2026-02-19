@@ -7,7 +7,7 @@ const MXN_TO_CAD = 0.070;
 export interface StorefrontProduct {
   id: string;
   slug: string;
-  image: string;
+  image: string | null;
   brand: string;       // category name from QuickDash, or manual brand on placeholder
   nameEs: string;
   nameEn: string;
@@ -30,7 +30,7 @@ export function qdProductToStorefront(p: QDProduct, isNew = false): StorefrontPr
   return {
     id: p.id,
     slug: p.slug,
-    image: p.thumbnail ?? p.images[0] ?? "",
+    image: p.thumbnail ?? p.images[0] ?? null,
     brand: p.category?.name ?? "",
     nameEs: p.name,
     nameEn: p.name,

@@ -13,7 +13,7 @@ import { qdProductToStorefront, qdCategoryToStorefront } from "@/lib/products";
 export default async function Page() {
   const [productsRes, categoriesRes] = await Promise.all([
     listProducts({ limit: 20, sort: "createdAt", order: "desc" }).catch(() => null),
-    listCategories({ withCount: true }).catch(() => null),
+    listCategories({ featured: true }).catch(() => null),
   ]);
 
   const products = (productsRes?.products ?? []).map((p) => qdProductToStorefront(p, true));

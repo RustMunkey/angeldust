@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import { FavouriteIcon, Search01Icon, ShoppingBasket02Icon, UserIcon, Menu01Icon } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
 import { RegionFlags } from "@/components/region-flags";
@@ -10,6 +11,15 @@ import { MobileNav } from "@/components/mobile-nav";
 export function Header() {
   const { setOpen } = useCart();
   const [mobileNavOpen, setMobileNavOpen] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
+  const router = useRouter();
+
+  const handleSearch = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Enter" && searchQuery.trim()) {
+      router.push(`/search?q=${encodeURIComponent(searchQuery.trim())}`);
+      setSearchQuery("");
+    }
+  };
 
   return (
     <header className="fixed top-8 inset-x-0 z-40 border-b border-border/50 bg-background/80 backdrop-blur-md">
@@ -21,6 +31,9 @@ export function Header() {
           <input
             type="text"
             placeholder="Search..."
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            onKeyDown={handleSearch}
             className="bg-transparent text-sm text-white placeholder:text-white/30 outline-none w-full"
           />
         </div>
@@ -28,7 +41,7 @@ export function Header() {
         {/* Hamburger — mobile only */}
         <HugeiconsIcon icon={Menu01Icon} size={22} className="absolute left-4 md:hidden cursor-pointer text-foreground" onClick={() => setMobileNavOpen(true)} />
 
-        <span className="font-serif text-2xl md:text-3xl tracking-wide">ANGELDUST</span>
+        <a href="/" className="font-serif text-2xl md:text-3xl tracking-wide">ANGELDUST</a>
 
         <div className="absolute right-4 sm:right-20 md:right-32 flex items-center gap-3 md:gap-4">
           {/* Favourites icon — mobile only */}

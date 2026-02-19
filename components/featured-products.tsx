@@ -88,12 +88,14 @@ export function FeaturedProducts({ products: qdProducts = [] }: Props) {
           {products.map((product) => (
             <Link key={product.id} href={`/products/${product.slug}`} className="group cursor-pointer flex-none w-52 no-underline">
               <div className="relative aspect-[3/4] overflow-hidden rounded-lg mb-3 bg-stone-900">
-                <Image
-                  src={product.image}
-                  alt={language === "es" ? product.nameEs : product.nameEn}
-                  fill
-                  className="object-cover transition-transform duration-500 group-hover:scale-105"
-                />
+                {product.image && (
+                  <Image
+                    src={product.image}
+                    alt={language === "es" ? product.nameEs : product.nameEn}
+                    fill
+                    className="object-cover transition-transform duration-500 group-hover:scale-105"
+                  />
+                )}
                 <HugeiconsIcon icon={FavouriteIcon} size={20} strokeWidth={1.5} className="absolute top-2.5 right-2.5 text-black hover:text-black/60 transition-colors cursor-pointer drop-shadow-md" />
               </div>
               <p className="text-xs text-white/40 mb-0.5">{product.brand}</p>

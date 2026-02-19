@@ -120,11 +120,14 @@ export async function getProduct(slug: string): Promise<{ product: QDProductDeta
 
 // ─── Categories ───────────────────────────────────────────────────────────────
 
-export async function listCategories(opts?: { withCount?: boolean }): Promise<{
+export async function listCategories(opts?: { withCount?: boolean; featured?: boolean }): Promise<{
   categories: QDCategory[];
 }> {
-  const q = opts?.withCount ? "?count=true" : "";
-  return qd(`/categories${q}`);
+  const q = new URLSearchParams();
+  if (opts?.withCount) q.set("count", "true");
+  if (opts?.featured) q.set("featured", "true");
+  const qs = q.toString();
+  return qd(`/categories${qs ? `?${qs}` : ""}`);
 }
 
 // ─── Discounts ────────────────────────────────────────────────────────────────
@@ -170,6 +173,32 @@ export async function getShippingRates(params: {
     body: JSON.stringify(params),
     next: { revalidate: 0 }, // don't cache shipping rates
   } as RequestInit);
+}
+
+// ─── Content Collections ──────────────────────────────────────────────────────
+
+export interface QDContentEntry {
+  id: string;
+  data: Record<string, unknown>;
+  isActive: boolean;
+  sortOrder: number | null;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export async function getCollectionEntries(slug: string): Promise<{
+  entries: QDContentEntry[];
+}> {
+  return qd(`/collections/${slug}/entries`);
+}
+
+// ─── Site Content (key-value) ─────────────────────────────────────────────────
+
+export async function getSiteContent(keys?: string[]): Promise<{
+  content: Record<string, string | null>;
+}> {
+  const q = keys ? `?keys=${keys.join(",")}` : "";
+  return qd(`/site-content${q}`, { next: { revalidate: 300 } });
 }
 
 // ─── Site ─────────────────────────────────────────────────────────────────────
