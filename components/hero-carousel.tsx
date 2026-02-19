@@ -4,6 +4,7 @@ import { useCallback, useEffect, useState } from "react";
 import useEmblaCarousel from "embla-carousel-react";
 import Image from "next/image";
 import { cn } from "@/lib/utils";
+import { useLanguage } from "@/components/language-provider";
 
 const slides = [
   {
@@ -56,7 +57,8 @@ const slides = [
   },
 ];
 
-export function HeroCarousel({ language }: { language: "es" | "en" }) {
+export function HeroCarousel() {
+  const { language } = useLanguage();
   const [emblaRef, emblaApi] = useEmblaCarousel({ loop: true });
   const [selectedIndex, setSelectedIndex] = useState(0);
 
